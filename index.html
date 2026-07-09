@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新買醉餐酒館 MAIZUI x COZZZY BAR | 宜蘭旗艦店</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-gold: #cca464;
+            --bg-dark: #0b0c10;
+            --bg-card: #1f2833;
+            --text-light: #ffffff;
+            --text-muted: #c5a880;
+            --neon-purple: #b026ff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        /* 導覽列 */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(11, 12, 16, 0.95);
+            border-bottom: 1px solid rgba(204, 164, 100, 0.2);
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary-gold);
+            text-decoration: none;
+            letter-spacing: 2px;
+        }
+
+        .logo span {
+            font-size: 0.9rem;
+            display: block;
+            color: var(--text-light);
+            font-weight: 300;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            color: var(--text-light);
+            text-decoration: none;
+            padding: 10px 15px;
+            font-weight: 400;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a:hover {
+            color: var(--primary-gold);
+        }
+
+        /* 區塊通用樣式 */
+        section {
+            padding: 100px 20px 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            color: var(--primary-gold);
+            margin-bottom: 40px;
+            position: relative;
+            letter-spacing: 3px;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 2px;
+            background: var(--primary-gold);
+            margin: 10px auto 0 auto;
+        }
+
+        /* Home 主視覺 */
+        #home {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(rgba(11, 12, 16, 0.8), rgba(11, 12, 16, 0.9)), url('https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+            padding-top: 60px;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            color: var(--primary-gold);
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(204,164,100,0.3);
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            letter-spacing: 6px;
+            margin-bottom: 30px;
+            color: #fff;
+        }
+
+        .hero-tags {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-gold);
+            color: var(--bg-dark);
+            padding: 12px 35px;
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 4px;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            background-color: #fff;
+            box-shadow: 0 0 15px rgba(255,255,255,0.5);
+        }
+
+        /* 菜單區塊 */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .menu-card {
+            background-color: var(--bg-card);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(204,164,100,0.1);
+            transition: transform 0.3s;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .menu-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background-color: #333;
+        }
+
+        .menu-info {
+            padding: 20px;
+        }
+
+        .menu-info h3 {
+            color: var(--primary-gold);
+            margin-bottom: 10px;
+        }
+
+        .menu-info p {
+            font-size: 0.9rem;
+            color: #a0a5b5;
+        }
+
+        /* 環境與場地 */
+        .space-container {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .rental-card {
+            background: linear-gradient(135deg, #1f2833 0%, #111822 100%);
+            padding: 40px;
+            border-radius: 12px;
+            border-left: 5px solid var(--primary-gold);
+            text-align: center;
+        }
+
+        .price-tag {
+            font-size: 2.5rem;
+            color: var(--primary-gold);
+            font-weight: 700;
+            margin: 20px 0;
+        }
+
+        /* 預約區塊 */
+        #booking {
+            text-align: center;
+            background-color: rgba(31, 40, 51, 0.4);
+            border-radius: 12px;
+            padding: 60px 20px;
+        }
+
+        .btn-line {
+            background-color: #06C755;
+            color: white;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: background-color 0.3s;
+            margin-top: 25px;
+        }
+
+        .btn-line:hover {
+            background-color: #05b34b;
+        }
+
+        /* 聯絡資訊與地圖 */
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+        }
+
+        .info-list {
+            list-style: none;
+        }
+
+        .info-list li {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.1rem;
+        }
+
+        .info-list i {
+            color: var(--primary-gold);
+            width: 25px;
+            font-size: 1.3rem;
+        }
+
+        .map-box {
+            width: 100%;
+            height: 300px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--primary-gold);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            font-size: 0.9rem;
+            border-top: 1px solid #1f2833;
+        }
+
+        /* RWD 行動裝置優化 */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none; /* 簡化手機版，可改為漢堡選單 */
+            }
+            .hero-title { font-size: 2.3rem; }
+            .hero-subtitle { font-size: 1.1rem; letter-spacing: 3px; }
+            .section-title { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <a href="#home" class="logo">
+                新買醉餐酒館
+                <span>MAIZUI x COZZZY BAR</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="#home">首頁</a></li>
+                <li><a href="#menu">美味菜單</a></li>
+                <li><a href="#space">環境空間</a></li>
+                <li><a href="#booking">包廂預約</a></li>
+                <li><a href="#about">店家資訊</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <section id="home">
+        <h1 class="hero-title">新買醉餐酒館</h1>
+        <div class="hero-subtitle">MAIZUI x COZZZY BAR</div>
+        <div class="hero-tags">熱炒 ｜ 海鮮 ｜ 牛排 ｜ 串燒 ｜ 生啤 ｜ 調酒</div>
+        <a href="#booking" class="btn-primary"><i class="fa-brands fa-line"></i> 立即預約包廂</a>
+    </section>
+
+    <section id="menu">
+        <h2 class="section-title">經典美味</h2>
+        <div class="menu-grid">
+            <div class="menu-card">
+                <div class="menu-img" style="background: url('https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=500&q=80') center/cover;"></div>
+                <div class="menu-info">
+                    <h3>主廚熱炒 & 海鮮</h3>
+                    <p>現點現炒的台式精髓與新鮮海產，最完美的下酒搭配。</p>
+                </div>
+            </div>
+            <div class="menu-card">
+                <div class="menu-img" style="background: url('https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=500&q=80') center/cover;"></div>
+                <div class="menu-info">
+                    <h3>炙燒牛排 & 串燒</h3>
+                    <p>火候剛好的美式炭烤風味與精緻日式串燒，鎖住澎湃肉汁。</p>
+                </div>
+            </div>
+            <div class="menu-card">
+                <div class="menu-img" style="background: url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=500&q=80') center/cover;"></div>
+                <div class="menu-info">
+                    <h3>頂級生啤 & 特調</h3>
+                    <p>冰涼暢快的生啤酒與專屬調酒師特製調飲，點亮微醺夜晚。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="space">
+        <h2 class="section-title">氣氛空間與租借</h2>
+        <div class="space-container">
+            <div class="rental-card">
+                <h3>派對與商業場地租借</h3>
+                <p style="margin-top: 10px; color: #a0a5b5;">配備超大螢幕賽事轉播級投影牆、頂級音響，適合公司聚餐、產品發表、慶生派對。</p>
+                <div class="price-tag">NT$ 2,000 <span style="font-size: 1rem; font-weight:300;">/ 每小時</span></div>
+                <a href="#booking" class="btn-primary">洽詢場地檔期</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="booking">
+        <h2 class="section-title">極致氛圍，即刻入座</h2>
+        <p>宜蘭最有氣氛的餐酒館，包廂位置有限，建議提前預約。</p>
+        <a href="https://line.me/R/ti/p/@你的LINE帳號" target="_blank" class="btn-line">
+            <i class="fa-brands fa-line"></i> 透過 LINE 線上預約包廂
+        </a>
+    </section>
+
+    <section id="about">
+        <h2 class="section-title">聯絡我們</h2>
+        <div class="about-grid">
+            <div>
+                <ul class="info-list">
+                    <li><i class="fa-solid fa-location-dot"></i> 宜蘭市復興路二段168號</li>
+                    <li><i class="fa-solid fa-clock"></i> 營業時間：18:00 – 02:00</li>
+                    <li><i class="fa-solid fa-phone"></i> 0968-72-1234</li>
+                </ul>
+                <p style="margin-top: 20px; color: var(--text-muted);">
+                    * 位置鄰近 GOGORO 換電站與久千代招牌柱旁，門口設有顯眼明亮的 MAIZUI x COZZZY BAR 招牌。
+                </p>
+            </div>
+            <div>
+                <div class="map-box">
+                    <iframe src="https://maps.google.com/maps?q=宜蘭市復興路二段168號&t=&z=15&ie=UTF-8&iwloc=&output=embed" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 新買醉餐酒館 MAIZUI x COZZZY BAR. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
