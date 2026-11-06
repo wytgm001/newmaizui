@@ -14,7 +14,7 @@
 </svg><i class="pointer" aria-hidden="true"></i><button id="spin" class="hub" aria-label="點我抽獎" disabled><small id="kicker">人人有獎</small><strong id="label" aria-live="polite">點我抽獎</strong></button></div>
 <footer><span class="notice" id="message" role="status"></span><button class="staff" id="staff" hidden>店員解鎖</button></footer>
 <dialog id="lock"><div class="pin-panel"><h2>店員解鎖</h2><label for="pin">輸入四位數密碼即可開啟下一筆</label><input id="pin" type="password" inputmode="numeric" maxlength="4" autocomplete="off" required><p class="err" id="error" role="alert"></p><div class="actions"><button id="back" type="button">返回</button></div></div></dialog></main><script>'use strict';
-const rates=[5,6,7,7.5,7.9,8,8.5,9,9.5], counts=[1,1,2,3,3,6,8,36,40];
+const rates=[5,6,7,7.5,7.9,8,8.5,9,9.5], counts=[1,1,2,2,2,5,6,29,32];
 const el=id=>document.getElementById(id);
 let db, current, busy=false;
 function fresh(){return {round:1,remaining:[...counts],total:0,last:null}}
@@ -97,9 +97,11 @@ function migratePool(state){
  return state;
 }
 try{
- const req=indexedDB.open('maizui-lucky-2026-11',2);
+ const req=indexedDB.open('maizui-lucky-2026-11',3);
  req.onupgradeneeded=event=>{
    if(event.oldVersion===0){req.result.createObjectStore('counter');return}
+   // Version 2 balances finish their current round before the first 80-ticket refill.
+   if(event.oldVersion>=2)return;
    const store=req.transaction.objectStore('counter'),read=store.get('campaign');
    read.onsuccess=()=>{if(read.result)store.put(migratePool(read.result),'campaign')};
  };
