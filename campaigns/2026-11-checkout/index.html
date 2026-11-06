@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-Hant"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#18171b"><title>新買醉餐酒館｜結帳抽折扣</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#17161b;color:#fff8ea;font:17px/1.55 -apple-system,BlinkMacSystemFont,"PingFang TC",sans-serif}button{font:inherit;touch-action:manipulation;cursor:pointer}button:focus-visible{outline:3px solid #ffe599;outline-offset:5px}main{max-width:1360px;margin:auto;padding:clamp(20px,3.6vw,55px)}header,footer,.ticketTop,.serial,.actions{display:flex;align-items:center;justify-content:space-between;gap:12px}header{padding-bottom:22px;border-bottom:1px solid #454147}.brand{font-weight:900;letter-spacing:.08em}.mark{display:inline-grid;place-items:center;vertical-align:middle;width:36px;height:36px;background:#ffbf73;color:#262023;border-radius:50%;margin-right:9px}.minor{color:#bdb7b2;font-size:15px}.panel{display:grid;grid-template-columns:1fr 1.12fr;min-height:min(63vh,600px);gap:5vw;align-items:center;padding:40px 0}.eyebrow{color:#ffc480;letter-spacing:.13em;font:bold 13px/1.4 ui-monospace,monospace}.intro h1{font-size:clamp(48px,6.8vw,89px);letter-spacing:-.07em;line-height:1.1;margin:18px 0 20px}.intro h1 em{font-style:normal;color:#ffbf73}.intro p{color:#d5ceca;margin-bottom:24px}.draw{background:#ffcb8a;border:0;color:#231b19;border-radius:14px;padding:16px 32px;font-size:22px;font-weight:850}.draw:disabled{opacity:.55}.quiet{background:#242127;color:#e2dad5;border:1px solid #544c54;border-radius:12px;padding:10px 17px}.ticket{position:relative;background:#fee0c3;color:#2b1a28;box-shadow:9px 11px 0 #663c4d;border-radius:22px;padding:25px 28px 16px;transform:rotate(-2deg);border:2px solid #191519}.ticketTop{font-size:13px;font-weight:850;letter-spacing:.12em}.stamp{border:1px solid;border-radius:50px;padding:3px 10px}.ticketBody{text-align:center;padding:18px 0 23px}.big{font:bold clamp(70px,10.8vw,148px)/1.12 Georgia,serif;color:#693344;letter-spacing:-.06em}.big small{font-size:.30em;letter-spacing:0}.sub{font-weight:700;color:#754956}.serial{border-top:2px dashed #bb947e;padding-top:12px;font:12px/1.4 monospace;letter-spacing:.08em}.bars{width:80px;height:20px;background:repeating-linear-gradient(90deg,#472737 0 2px,transparent 2px 5px,#472737 5px 6px,transparent 6px 9px)}footer{border-top:1px solid #454147;padding-top:17px}.note{color:#ffcb8a;min-height:1.6em;font-size:15px}.shaking{animation:flip .65s ease-in-out}@keyframes flip{40%{transform:rotate(3deg) scale(.96)}75%{transform:rotate(-3deg) scale(1.03)}}dialog{max-width:min(460px,90vw);border:1px solid #635561;border-radius:20px;padding:26px;background:#252126;color:#fff8eb}dialog::backdrop{background:#0009}dialog h2{margin:0}.actions{justify-content:flex-end}.actions .draw{font-size:17px;padding:11px 18px}@media(max-width:700px){.panel{grid-template-columns:1fr;gap:24px;padding:22px 0 32px}.ticket{grid-row:1;margin:0 8px}.ticketBody{padding:6px}.intro h1{font-size:40px;margin:10px 0}.intro h1 br{display:none}.intro p{margin:8px 0 14px}header{padding-bottom:12px}.minor{font-size:13px}.draw{width:100%}.actions .draw{width:auto}}@media(prefers-reduced-motion:reduce){.shaking{animation:none}}
+</style><main><header><div class="brand"><span class="mark">醉</span>新買醉餐酒館</div><span class="minor">11/6 — 11/30</span></header>
+<section class="panel"><div class="intro"><div class="eyebrow">MAIZUI / LUCKY DRAW</div><h1>結帳抽折扣<br><em>人人有獎。</em></h1><p>來店消費不限金額，點一下抽出這筆帳單的折扣。</p><button class="draw" id="go" disabled>載入中…</button><div class="note" id="note" role="status"></div></div>
+<div class="ticket" id="ticket"><div class="ticketTop"><span>新買醉・折扣券</span><span class="stamp" id="badge">尚未開獎</span></div><div class="ticketBody" aria-live="polite"><div class="big" id="value">?<small> 折</small></div><div class="sub" id="caption">你的折扣，等你揭曉</div></div><div class="serial"><span id="serial">MAIZUI / YILAN</span><i class="bars"></i></div></div></section>
+<footer><span class="minor">新買醉餐酒館 · 宜蘭旗艦店</span><button class="quiet" id="info">活動說明</button></footer>
+<dialog id="rules"><h2>活動說明</h2><p>2026/11/6～11/30，來店消費不限金額，每筆結帳由店員開啟一次抽獎，人人有獎。</p><p>獎項有 5、6、7、7.5、7.9、8、8.5、8.9、9、9.5 折，以本次抽出的折數結帳。</p><button class="quiet" onclick="this.closest('dialog').close()">知道了</button></dialog>
+<dialog id="next"><h2>開啟下一筆結帳？</h2><p>請店員先依本次折扣完成結帳，再交給下一位客人。</p><div class="actions"><button class="quiet" id="cancel">返回</button><button class="draw" id="confirm">已結帳，開下一筆</button></div></dialog></main>
+<script>
+'use strict';
+const rates=[5,6,7,7.5,7.9,8,8.5,8.9,9,9.5], counts=[1,1,2,3,3,6,8,10,26,40];
+const el=id=>document.getElementById(id);
+let db, current, busy=false;
+function fresh(){return {round:1,remaining:[...counts],total:0,last:null}}
+function choose(s){
+ if(!s.remaining.some(Boolean)){s.remaining=[...counts];s.round++}
+ const n=s.remaining.reduce((a,b)=>a+b,0),limit=2**32-2**32%n;
+ let v; do{v=crypto.getRandomValues(new Uint32Array(1))[0]}while(v>=limit);
+ let k=v%n,i=0;while(k>=s.remaining[i]){k-=s.remaining[i];i++}
+ s.remaining[i]--;s.total++;s.last=rates[i];return s
+}
+function inPeriod(){const d=new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());return d>='2026-11-06'&&d<='2026-11-30'}
+function transact(fn){
+ return new Promise((resolve,reject)=>{
+ const tx=db.transaction('counter','readwrite'),store=tx.objectStore('counter'),req=store.get('campaign');let state;
+ req.onsuccess=()=>{state=req.result??fresh();if(fn(state))store.put(state,'campaign')};
+ tx.oncomplete=()=>resolve(state);tx.onabort=()=>reject(tx.error??Error('無法保存結果'));
+ })
+}
+function render(){const won=current.last!==null;
+ el('value').innerHTML=(won?current.last:'?')+'<small> 折</small>';
+ el('badge').textContent=won?'已開獎':'尚未開獎';
+ el('caption').textContent=won?'請出示給櫃檯，依此折數結帳':'你的折扣，等你揭曉';
+ el('serial').textContent=won?'MAIZUI / '+String(current.total).padStart(5,'0'):'MAIZUI / YILAN';
+ el('go').textContent=won?'店員・下一筆結帳':'抽出我的折扣 →';
+ el('go').disabled=busy||(!won&&!inPeriod());
+ el('note').textContent=!inPeriod()?'抽獎開放期間為 11/6～11/30。':'';
+}
+function fail(){busy=false;el('go').disabled=true;el('go').textContent='暫停抽獎';el('note').textContent='無法讀取或保存抽獎紀錄，請用原本的 Safari 分頁重新整理。'}
+async function refresh(){if(!db||busy)return;try{current=await transact(()=>false);render()}catch{fail()}}
+el('info').onclick=()=>el('rules').showModal();
+el('cancel').onclick=()=>el('next').close();
+el('go').onclick=async()=>{
+ if(busy||!current)return;
+ if(current.last!==null){el('next').showModal();return}
+ busy=true;el('go').disabled=true;const seen=current.total;
+ try{current=await transact(s=>{if(s.total!==seen||s.last!==null||!inPeriod())return false;choose(s);return true});
+ el('ticket').classList.add('shaking');await new Promise(r=>setTimeout(r,650));el('ticket').classList.remove('shaking');busy=false;await refresh()
+ }catch{fail()}
+};
+el('confirm').onclick=async()=>{el('next').close();if(busy)return;busy=true;el('go').disabled=true;const seen=current.total;
+ try{current=await transact(s=>{if(s.total!==seen||s.last===null)return false;s.last=null;return true});busy=false;render()}catch{fail()}
+};
+window.addEventListener('focus',refresh);
+try{const req=indexedDB.open('maizui-lucky-2026-11',1);req.onupgradeneeded=()=>req.result.createObjectStore('counter');
+req.onsuccess=()=>{db=req.result;refresh()};req.onerror=fail;req.onblocked=fail}catch{fail()}
+</script></html>
