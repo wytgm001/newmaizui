@@ -14,7 +14,7 @@ footer nav{display:flex;gap:8px;margin-left:auto}#records{width:min(540px,94vw)}
 <path d="M 250 250 L 13.646 291.676 A 240 240 0 0 1 42.154 130.000 Z" fill="#463847" stroke="#30252f" stroke-width="2"/><g transform="rotate(280 250 250)" fill="#ffe3bc"><text x="250" y="89" text-anchor="middle" font-size="37" font-weight="850">9<tspan font-size="16">折</tspan></text><circle cx="250" cy="29" r="3"/></g>
 <path d="M 250 250 L 42.154 130.000 A 240 240 0 0 1 167.915 24.474 Z" fill="#d7a383" stroke="#30252f" stroke-width="2"/><g transform="rotate(320 250 250)" fill="#412635"><text x="250" y="89" text-anchor="middle" font-size="37" font-weight="850">9.5<tspan font-size="16">折</tspan></text><circle cx="250" cy="29" r="3"/></g>
 </svg><i class="pointer" aria-hidden="true"></i><button id="spin" class="hub" aria-label="點我抽獎" disabled><small id="kicker">人人有獎</small><strong id="label" aria-live="polite">點我抽獎</strong></button></div>
-<section class="recent" aria-labelledby="recent-title"><h2 id="recent-title">最近中獎紀錄</h2><p>本機最近 5 抽</p><p id="recent-note" role="status">讀取中…</p><ol id="recent-list"></ol></section></div>
+<section class="recent" aria-labelledby="recent-title"><h2 id="recent-title">最近中獎紀錄</h2><p id="recent-note" role="status">讀取中…</p><ol id="recent-list"></ol></section></div>
 <footer><span class="notice" id="message" role="status"></span><nav><button class="staff" id="history" disabled>店員紀錄</button><button class="staff" id="staff" hidden>店員解鎖</button></nav></footer>
 <dialog id="lock"><div class="pin-panel"><h2 id="pin-title">店員解鎖</h2><label id="pin-note" for="pin">輸入四位數密碼即可開啟下一筆</label><input id="pin" type="password" inputmode="numeric" maxlength="4" autocomplete="off" required><p class="err" id="error" role="alert"></p><div class="actions"><button id="back" type="button">返回</button></div></div></dialog>
 <dialog id="records" aria-labelledby="log-title"><h2 id="log-title">抽獎紀錄</h2>
@@ -103,7 +103,7 @@ function refreshRecent(){
    const cursor=request.result;
    if(!cursor)return;
    latest.push(cursor.value);
-   if(latest.length<5)cursor.continue();
+   if(latest.length<10)cursor.continue();
  };
  tx.oncomplete=()=>{
    const list=document.createDocumentFragment();
