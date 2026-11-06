@@ -1,5 +1,6 @@
 <!doctype html><html lang="zh-Hant"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#19171d"><title>新買醉｜幸運輪盤</title><style>
 *{box-sizing:border-box}body{margin:0;color:#fff4e4;background:radial-gradient(ellipse at center,#38252e,#19171d 72%);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC",sans-serif}main{position:relative;min-height:100vh;min-height:100svh;display:grid;place-items:center;padding:60px 16px 70px}header,footer{position:absolute;left:4%;right:4%;display:flex;justify-content:space-between;align-items:center;gap:12px}header{top:15px;border-bottom:1px solid #65505b;padding-bottom:10px}header b{font-size:20px}header span,footer{font-size:14px;color:#e1c3b8}footer{bottom:13px}.wheel{width:min(84vw,calc(100vh - 145px),770px);width:min(84vw,calc(100svh - 145px),770px);aspect-ratio:1;position:relative;display:grid;place-items:center;border:6px solid #d3a478;border-radius:50%;background:#30232d;box-shadow:0 0 0 3px #59444c,0 16px 42px #100d1180}.wheel svg{display:block;width:100%;height:100%;will-change:transform}.pointer{position:absolute;top:-13px;left:50%;transform:translateX(-50%);width:38px;height:41px;background:#fff2d7;clip-path:polygon(0 0,100% 0,50% 100%);z-index:2}.hub{position:absolute;border:4px solid #eec69a;background:#282028;color:#fff1d8;border-radius:50%;width:35%;aspect-ratio:1;display:grid;align-content:center;justify-items:center;box-shadow:0 4px 10px #27172088}.hub strong{font-size:clamp(28px,5vmin,52px);line-height:1.25}.hub small{color:#f5c18e;font-size:clamp(12px,1.8vmin,18px)}button{font:inherit;touch-action:manipulation;cursor:pointer}button:disabled{cursor:default;opacity:1}.staff,dialog button{min-height:46px;padding:8px 19px;background:#342830;border:1px solid #92717d;color:#fff5e2;border-radius:12px}button:focus-visible{outline:4px solid white;outline-offset:3px}.notice{color:#ffd7a3;max-width:70%}dialog{background:#29212a;color:#ffeed8;border:1px solid #a17c75;border-radius:20px;padding:25px;width:min(350px,92vw)}dialog::backdrop{background:#08070bbe}.pin-panel{display:grid;gap:12px}h2{margin:0}input{background:#151218;color:white;border:1px solid #96828b;border-radius:12px;font-size:26px;letter-spacing:.35em;padding:10px;text-align:center;width:100%}.actions{display:flex;gap:10px}.actions button{flex:1}.primary{background:#f4bd87;color:#291a20}.err{color:#ffb0a7;margin:0} [hidden]{display:none!important}@media(max-height:450px){main{padding:45px 0}.wheel{width:min(73vh,82vw)}header{top:5px}footer{bottom:4px}}
+footer nav{display:flex;gap:8px;margin-left:auto}#records{width:min(540px,94vw)}.log-frame{max-height:52vh;overflow:auto}#records table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}#records td,#records th{padding:7px;text-align:left;border-bottom:1px solid #65505b}#records th{position:sticky;top:0;background:#29212a}.log-note{font-size:14px;color:#e1c3b8}
 </style><main><header><b>新買醉餐酒館</b><span>活動時間：11/6～11/30</span></header>
 <div class="wheel" id="wheel"><svg id="disc" viewBox="0 0 500 500" aria-hidden="true">
 <path d="M 250 250 L 167.915 24.474 A 240 240 0 0 1 332.085 24.474 Z" fill="#ffc46e" stroke="#30252f" stroke-width="2"/><g transform="rotate(0 250 250)" fill="#412635"><text x="250" y="89" text-anchor="middle" font-size="37" font-weight="850">5<tspan font-size="16">折</tspan></text><circle cx="250" cy="29" r="3"/></g>
@@ -12,8 +13,12 @@
 <path d="M 250 250 L 13.646 291.676 A 240 240 0 0 1 42.154 130.000 Z" fill="#463847" stroke="#30252f" stroke-width="2"/><g transform="rotate(280 250 250)" fill="#ffe3bc"><text x="250" y="89" text-anchor="middle" font-size="37" font-weight="850">9<tspan font-size="16">折</tspan></text><circle cx="250" cy="29" r="3"/></g>
 <path d="M 250 250 L 42.154 130.000 A 240 240 0 0 1 167.915 24.474 Z" fill="#d7a383" stroke="#30252f" stroke-width="2"/><g transform="rotate(320 250 250)" fill="#412635"><text x="250" y="89" text-anchor="middle" font-size="37" font-weight="850">9.5<tspan font-size="16">折</tspan></text><circle cx="250" cy="29" r="3"/></g>
 </svg><i class="pointer" aria-hidden="true"></i><button id="spin" class="hub" aria-label="點我抽獎" disabled><small id="kicker">人人有獎</small><strong id="label" aria-live="polite">點我抽獎</strong></button></div>
-<footer><span class="notice" id="message" role="status"></span><button class="staff" id="staff" hidden>店員解鎖</button></footer>
-<dialog id="lock"><div class="pin-panel"><h2>店員解鎖</h2><label for="pin">輸入四位數密碼即可開啟下一筆</label><input id="pin" type="password" inputmode="numeric" maxlength="4" autocomplete="off" required><p class="err" id="error" role="alert"></p><div class="actions"><button id="back" type="button">返回</button></div></div></dialog></main><script>'use strict';
+<footer><span class="notice" id="message" role="status"></span><nav><button class="staff" id="history" disabled>抽獎紀錄</button><button class="staff" id="staff" hidden>店員解鎖</button></nav></footer>
+<dialog id="lock"><div class="pin-panel"><h2 id="pin-title">店員解鎖</h2><label id="pin-note" for="pin">輸入四位數密碼即可開啟下一筆</label><input id="pin" type="password" inputmode="numeric" maxlength="4" autocomplete="off" required><p class="err" id="error" role="alert"></p><div class="actions"><button id="back" type="button">返回</button></div></div></dialog>
+<dialog id="records" aria-labelledby="log-title"><h2 id="log-title">抽獎紀錄</h2>
+<p class="log-note">本機紀錄・台灣時間・最新在上</p><p id="log-status" role="status"></p>
+<div class="log-frame"><table><thead><tr><th>序號</th><th>抽獎時間</th><th>折數</th></tr></thead><tbody id="rows"></tbody></table></div>
+<div class="actions"><button id="save-log" disabled>匯出 CSV</button><button id="close-log">回到輪盤</button></div></dialog></main><script>'use strict';
 const rates=[5,6,7,7.5,7.9,8,8.5,9,9.5], counts=[1,1,2,2,2,5,6,29,32];
 const el=id=>document.getElementById(id);
 let db, current, busy=false;
@@ -26,10 +31,10 @@ function choose(s){
  s.remaining[i]--;s.total++;s.last=rates[i];return s
 }
 function inPeriod(){const d=new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());return d>='2026-11-06'&&d<='2026-11-30'}
-function transact(fn){
+function transact(fn,stores=['counter']){
  return new Promise((resolve,reject)=>{
- const tx=db.transaction('counter','readwrite'),store=tx.objectStore('counter'),req=store.get('campaign');let state;
- req.onsuccess=()=>{state=req.result??fresh();if(fn(state))store.put(state,'campaign')};
+ const tx=db.transaction(stores,'readwrite'),store=tx.objectStore('counter'),req=store.get('campaign');let state;
+ req.onsuccess=()=>{state=req.result??fresh();if(fn(state,tx))store.put(state,'campaign')};
  tx.oncomplete=()=>resolve(state);tx.onabort=()=>reject(tx.error??Error('無法保存結果'));
  })
 }
@@ -38,6 +43,7 @@ const disc=el('disc'),button=el('spin'),lock=el('lock'),pin=el('pin');
 const stopAngle=rate=>(360-rates.indexOf(rate)*(360/rates.length))%360;
 let unlockTotal=null, rotation=0;
 function show(){
+ el('history').disabled=busy;
  const won=current.last!==null;
  const onWheel=rates.includes(current.last);
  el('wheel').querySelector('.pointer').hidden=won&&!onWheel;
@@ -49,14 +55,20 @@ function show(){
  button.setAttribute('aria-label',el('label').textContent);
  el('staff').hidden=!won;el('message').textContent=won?'本次結帳折扣':inPeriod()?'':'活動期間為 11/6～11/30';
 }
-function fail(){busy=false;button.disabled=true;el('staff').hidden=true;el('message').textContent='暫停抽獎，請店員重新整理。'}
+function fail(){busy=false;el('history').disabled=true;button.disabled=true;el('staff').hidden=true;el('message').textContent='暫停抽獎，請店員重新整理。'}
 async function refresh(){if(!db||busy)return;try{const state=await transact(()=>false);if(!busy){current=state;show()}}catch{fail()}}
 async function draw(){
  if(busy||button.disabled||!current||current.last!==null)return;
  const started=performance.now(),seen=current.total;busy=true;button.disabled=true;
  try{
  let picked=false;
- current=await transact(s=>{if(s.total!==seen||s.last!==null||!inPeriod())return false;choose(s);picked=true;return true});
+ current=await transact((s,tx)=>{
+   if(s.total!==seen||s.last!==null||!inPeriod())return false;
+   choose(s);
+   tx.objectStore('draws').add({sequence:s.total,time:Date.now(),rate:s.last});
+   picked=true;
+   return true;
+ },['counter','draws']);
  if(picked){
  const duration=matchMedia('(prefers-reduced-motion: reduce)').matches?150:Math.max(0,2350-(performance.now()-started));
  el('kicker').textContent='';el('label').textContent='開獎中';
@@ -69,7 +81,46 @@ async function draw(){
 }
 button.onclick=draw;
 el('wheel').onclick=e=>{if(!button.contains(e.target))draw()};
-el('staff').onclick=()=>{if(!current||current.last===null||busy)return;unlockTotal=current.total;pin.value='';el('error').textContent='';lock.showModal();pin.focus()};
+const records=el('records');
+const localTime=new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'});
+let historyMode=false,entries=[];
+function askPin(viewHistory){
+ if(!db||!current||busy||(!viewHistory&&current.last===null))return;
+ historyMode=viewHistory;unlockTotal=current.total;pin.value='';el('error').textContent='';
+ el('pin-title').textContent=viewHistory?'查看抽獎紀錄':'店員解鎖';
+ el('pin-note').textContent=viewHistory?'請輸入店員密碼':'輸入四位數密碼即可開啟下一筆';
+ lock.showModal();pin.focus();
+}
+el('staff').onclick=()=>askPin(false);
+el('history').onclick=()=>askPin(true);
+function showHistory(){
+ records.showModal();el('log-status').textContent='讀取中…';
+ const tx=db.transaction('draws','readonly'),request=tx.objectStore('draws').getAll();
+ tx.oncomplete=()=>{
+   if(!records.open)return;
+   entries=request.result.reverse();
+   el('log-status').textContent=entries.length?'共 '+entries.length+' 筆':'目前還沒有抽獎紀錄';
+   const fragment=document.createDocumentFragment();
+   for(const entry of entries){
+     const row=document.createElement('tr');
+     for(const value of [entry.sequence,localTime.format(entry.time),entry.rate+' 折']){
+       row.insertCell().textContent=value;
+     }
+     fragment.append(row);
+   }
+   el('rows').replaceChildren(fragment);el('save-log').disabled=!entries.length;
+ };
+ tx.onabort=()=>{if(records.open)el('log-status').textContent='讀取失敗，請關閉後再試一次。'};
+}
+el('close-log').onclick=()=>records.close();
+records.onclose=()=>{entries=[];el('rows').replaceChildren();el('save-log').disabled=true};
+el('save-log').onclick=()=>{
+ if(!records.open||!entries.length)return;
+ const lines=['序號,抽獎時間（台灣）,折數',...entries.map(e=>[e.sequence,localTime.format(e.time),e.rate+'折'].join(','))];
+ const url=URL.createObjectURL(new Blob(['\uFEFF'+lines.join('\r\n')],{type:'text/csv;charset=utf-8'}));
+ const link=document.createElement('a');link.href=url;link.download='新買醉抽獎紀錄.csv';document.body.append(link);link.click();link.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),60000);
+};
 el('back').onclick=()=>lock.close();
 lock.onclose=()=>{pin.value='';unlockTotal=null};
 pin.oninput=async ()=>{
@@ -84,6 +135,7 @@ pin.oninput=async ()=>{
  for(const digit of entered)checksum=Math.imul(checksum^digit.charCodeAt(0),16777619)>>>0;
  if(!/^\d{4}$/.test(entered)||checksum!==3052262101){el('error').textContent='密碼錯誤，請再試一次。';pin.focus();busy=false;return}
  if(!lock.open||unlockTotal!==seen){busy=false;return}
+ if(historyMode){lock.close();busy=false;showHistory();return}
  current=await transact(s=>{if(s.total!==seen||s.last===null)return false;s.last=null;return true});
  lock.close();busy=false;show()
  }catch{lock.close();fail()}
@@ -97,8 +149,9 @@ function migratePool(state){
  return state;
 }
 try{
- const req=indexedDB.open('maizui-lucky-2026-11',3);
+ const req=indexedDB.open('maizui-lucky-2026-11',4);
  req.onupgradeneeded=event=>{
+   req.result.createObjectStore('draws',{keyPath:'sequence'});
    if(event.oldVersion===0){req.result.createObjectStore('counter');return}
    // Version 2 balances finish their current round before the first 80-ticket refill.
    if(event.oldVersion>=2)return;
